@@ -27,8 +27,8 @@ import java.util.LinkedList;
 public class Fragment_history extends Fragment {
     private CityRecyclerAdapter adapter;
     private EducationSource educationSource;
-
-
+    String cityChoice;
+    SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,8 +42,6 @@ public class Fragment_history extends Fragment {
         initRecyclerView(view);
     }
 
-
-    // Инициализация списка
     public void initRecyclerView(View view) {
 
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
@@ -56,48 +54,20 @@ public class Fragment_history extends Fragment {
         educationSource = new EducationSource(educationDao);
         adapter = new CityRecyclerAdapter(educationSource, getActivity());
         recyclerView.setAdapter(adapter);
-//        recyclerView.SetOnItemClickListener(new CityRecyclerAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(View view, int position) {
-//                int id = recyclerView.getChildAdapterPosition(view);
-//                                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//                                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                                editor.putString("cityName", cityTest);
-//                                editor.apply();
-//                requireActivity().getSupportFragmentManager()
-//                                        .beginTransaction()
-//                                        .replace(R.id.fragmentContainer, new Fragment_main())
-//                                        .commit();
-//            }
-//        });
-//
-//    }
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                long id = recyclerView.getChildAdapterPosition(view);
+//                cityChoice = educationSource.getCityById(id);
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("cityName", cityChoice);
+                editor.apply();
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, new Fragment_main())
+                        .commit();
+            }
+        });
     }
 }
-
-    //    public void initRecyclerView(LinkedList<String> data, View view) {
-    //        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-    //        recyclerView.setHasFixedSize(true);
-    //        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-    //        recyclerView.setLayoutManager(layoutManager);
-    //        final RecyclerAdapter adapter = new RecyclerAdapter(data);
-    //        recyclerView.setAdapter(adapter);
-    //        adapter.SetOnItemClickListener(new RecyclerAdapter.OnItemClickListener() {
-    //            LinkedList<String> cityNamesArr = list.getHistoryList();
-    //
-    //            @Override
-    //            public void onItemClick(View view, int position) {
-    //                indexArr = recyclerView.getChildLayoutPosition(view);
-    //                cityChoice = cityNamesArr.get(indexArr).toString();
-    //                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    //                SharedPreferences.Editor editor = sharedPreferences.edit();
-    //                editor.putString("cityName", cityChoice);
-    //                editor.apply();
-    //                requireActivity().getSupportFragmentManager()
-    //                        .beginTransaction()
-    //                        .replace(R.id.fragmentContainer, new Fragment_main())
-    //                        .commit();
-    //            }
-    //        });
-    //    }
-    //}
