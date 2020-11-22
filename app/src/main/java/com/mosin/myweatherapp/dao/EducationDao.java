@@ -18,7 +18,7 @@ public interface EducationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCity(Cities city);
 
-    @Update
+    @Update()
     void updateCity (Cities city);
 
     @Delete
@@ -32,6 +32,9 @@ public interface EducationDao {
 
     @Query("SELECT * FROM cities WHERE id = :id")
     Cities getCityById(long id);
+
+    @Query("SELECT * FROM cities WHERE city_name LIKE :searchCityName")
+    Cities getCityForUpdate(String searchCityName);
 
     @Query("SELECT COUNT() FROM cities")
     long getCountCity();

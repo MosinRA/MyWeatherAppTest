@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
+import com.mosin.myweatherapp.dao.EducationDao;
 import com.mosin.myweatherapp.interfaces.IOpenWeatherMap;
 import com.mosin.myweatherapp.model.WeatherRequest;
 import com.mosin.myweatherapp.modelDB.Cities;
@@ -52,9 +53,11 @@ public class Fragment_main extends Fragment {
     private TextView showTempView, showWindSpeed, showPressure, showHumidity, cityName, dateNow;
     private ImageView icoWeather, pic;
     SharedPreferences sharedPreferences;
-    private String cityChoice, icoView;
+    private String cityChoice, icoView, temperatureValue;
     private boolean wind, pressure, humidity;
     private EducationSource educationSource;
+    Cities city = new Cities();
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +74,6 @@ public class Fragment_main extends Fragment {
         requestRetrofit(cityChoice, MERRIC, API_KEY);
         setPic();
         dateInit();
-        onClick();
     }
 
     public void findView(View view) {
@@ -94,15 +96,6 @@ public class Fragment_main extends Fragment {
         cityName.setText(cityChoice);
     }
 
-    public void onClick(){
-        cityName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addCity();
-            }
-        });
-    }
-
     private void initRetorfit() {
         Retrofit retrofit;
         retrofit = new Retrofit.Builder()
@@ -118,12 +111,11 @@ public class Fragment_main extends Fragment {
                     @Override
                     public void onResponse(Call<WeatherRequest> call, Response<WeatherRequest> response) {
                         if (response.body() != null) {
-                            String temperatureValue = String.format(Locale.getDefault(), "%.1f °", response.body().getMain().getTemp());
+                            temperatureValue = String.format(Locale.getDefault(), "%.1f °", response.body().getMain().getTemp());
                             String windSpeedStr = String.format(Locale.getDefault(), "%.0f", response.body().getWind().getSpeed());
                             String pressureText = String.format(Locale.getDefault(), "%.0f", response.body().getMain().getPressure());
                             String humidityStr = String.format(Locale.getDefault(), "%d", response.body().getMain().getHumidity());
                             icoView = response.body().getWeather()[0].getIcon();
-
                             showTempView.setText(temperatureValue);
                             if (wind) {
                                 showWindSpeed.setText(String.format("%s %s м/с", getResources().getString(R.string.wind_speed), windSpeedStr));
@@ -140,6 +132,7 @@ public class Fragment_main extends Fragment {
                             } else {
                                 showHumidity.setVisibility(View.GONE);
                             }
+                            addCity();
                             setIcoViewImage();
                         } else if (response.code() == 404) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -150,6 +143,7 @@ public class Fragment_main extends Fragment {
                             AlertDialog alert = builder.create();
                             alert.show();
                         }
+
                     }
 
                     @Override
@@ -201,9 +195,16 @@ public class Fragment_main extends Fragment {
     }
 
     public void addCity() {
-        Cities city = new Cities();
         city.cityName = cityChoice;
-        city.cityTemp = showTempView.getText().toString();
+        city.cityTemp = "Температура " + temperatureValue;
+        EducationDao educationDao = App
+                .getInstance()
+                .getEducationDao();
+        educationSource = new EducationSource(educationDao);
         educationSource.addCity(city);
     }
 }
+
+
+
+
