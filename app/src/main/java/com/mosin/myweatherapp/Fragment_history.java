@@ -20,12 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mosin.myweatherapp.dao.EducationDao;
+import com.mosin.myweatherapp.modelDB.Cities;
 
 import java.util.LinkedList;
 
 public class Fragment_history extends Fragment {
     private CityRecyclerAdapter adapter;
     private EducationSource educationSource;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,8 +44,9 @@ public class Fragment_history extends Fragment {
 
 
     // Инициализация списка
-    private void initRecyclerView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+    public void initRecyclerView(View view) {
+
+        final RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -51,8 +54,24 @@ public class Fragment_history extends Fragment {
                 .getInstance()
                 .getEducationDao();
         educationSource = new EducationSource(educationDao);
-        adapter = new CityRecyclerAdapter(educationSource, getContext());
+        adapter = new CityRecyclerAdapter(educationSource, getActivity());
         recyclerView.setAdapter(adapter);
+//        recyclerView.SetOnItemClickListener(new CityRecyclerAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                int id = recyclerView.getChildAdapterPosition(view);
+//                                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+//                                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                                editor.putString("cityName", cityTest);
+//                                editor.apply();
+//                requireActivity().getSupportFragmentManager()
+//                                        .beginTransaction()
+//                                        .replace(R.id.fragmentContainer, new Fragment_main())
+//                                        .commit();
+//            }
+//        });
+//
+//    }
     }
 }
 

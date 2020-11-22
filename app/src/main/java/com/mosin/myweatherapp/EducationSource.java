@@ -26,6 +26,10 @@ public class EducationSource {
         cities = educationDao.getAllCities();
     }
 
+    public void getCityById(int id){
+        educationDao.getCityById(id);
+    }
+
     public long getCountCities(){
         return educationDao.getCountCity();
     }

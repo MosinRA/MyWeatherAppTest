@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
 import com.mosin.myweatherapp.interfaces.IOpenWeatherMap;
 import com.mosin.myweatherapp.model.WeatherRequest;
+import com.mosin.myweatherapp.modelDB.Cities;
 import com.squareup.picasso.Picasso;
 
 import java.io.BufferedReader;
@@ -53,6 +54,7 @@ public class Fragment_main extends Fragment {
     SharedPreferences sharedPreferences;
     private String cityChoice, icoView;
     private boolean wind, pressure, humidity;
+    private EducationSource educationSource;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class Fragment_main extends Fragment {
         requestRetrofit(cityChoice, MERRIC, API_KEY);
         setPic();
         dateInit();
+        onClick();
     }
 
     public void findView(View view) {
@@ -89,6 +92,15 @@ public class Fragment_main extends Fragment {
         humidity = sharedPreferences.getBoolean("Humidity", false);
         cityChoice = sharedPreferences.getString("cityName", cityChoice);
         cityName.setText(cityChoice);
+    }
+
+    public void onClick(){
+        cityName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCity();
+            }
+        });
     }
 
     private void initRetorfit() {
@@ -186,5 +198,12 @@ public class Fragment_main extends Fragment {
         Picasso.get()
                 .load("https://www.dorogavrim.ru/img/flagi/goroda/flag_" + cityChoice.toLowerCase() + ".jpg")
                 .into(pic);
+    }
+
+    public void addCity() {
+        Cities city = new Cities();
+        city.cityName = cityChoice;
+        city.cityTemp = showTempView.getText().toString();
+        educationSource.addCity(city);
     }
 }

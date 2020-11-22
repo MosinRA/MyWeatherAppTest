@@ -16,8 +16,8 @@ public class RandomCities {
     }
 
     public Cities rndUpdateCities(Cities city){
-        city.cityName = randomCityName();
-        city.cityTemp = randomCityTemp();
+        city.cityName = "randomCityName()";
+        city.cityTemp = "randomCityTemp()";
         return city;
     }
 
@@ -27,12 +27,12 @@ public class RandomCities {
     }
 
     private String randomCityName(){
-        String[] cityName = resources.getStringArray(R.array.city_names);
-        return cityName[randomCity.nextInt(cityName.length)];
+        String[] cityName = {"Surgut"};
+        return cityName[0];
     }
 
     private String randomCityTemp(){
-        String[] cityTemp = resources.getStringArray(R.array.city_temp);
-        return cityTemp[randomCity.nextInt(cityTemp.length)];
+        String[] cityTemp = {"2"};
+        return cityTemp[0];
     }
 }

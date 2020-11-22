@@ -1,6 +1,7 @@
 package com.mosin.myweatherapp;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -11,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mosin.myweatherapp.dao.EducationDao;
+import com.mosin.myweatherapp.modelDB.Cities;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     SharedPreferences sharedPreferences;
     private String cityChoice;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
