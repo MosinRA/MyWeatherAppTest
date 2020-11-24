@@ -37,7 +37,8 @@ public class MyFirebaseServiceMsg extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(text)
                 // переход на интент
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
         NotificationManager notificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(messageId++, builder.build());

@@ -2,7 +2,10 @@ package com.mosin.myweatherapp;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity
     private EducationSource educationSource;
     Cities city = new Cities();
 
+    private BroadcastReceiver myReceiver = new MyReceiver();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
         initNotificationChannel();
+
+        registerReceiver(myReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -172,5 +179,11 @@ public class MainActivity extends AppCompatActivity
         Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         dateText = dateFormat.format(currentDate);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
     }
 }
