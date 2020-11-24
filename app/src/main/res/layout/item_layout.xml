@@ -23,7 +23,7 @@
             android:text=""
             tools:text="city_name"
             android:textAlignment="viewStart"
-            android:textSize="30sp"
+            android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +34,7 @@
             android:layout_marginStart="5dp"
             android:text=""
             android:textAlignment="viewStart"
-            android:textSize="30sp"
+            android:textSize="25sp"
             app:layout_constraintStart_toEndOf="@+id/textCityName"
             app:layout_constraintTop_toTopOf="@+id/textCityName"
             tools:text="date text" />
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textAlignment="viewStart"
-            android:textSize="30sp"
+            android:textSize="25sp"
             app:layout_constraintStart_toStartOf="@+id/textCityName"
             app:layout_constraintTop_toBottomOf="@+id/textCityName"
             tools:text="temp text" />

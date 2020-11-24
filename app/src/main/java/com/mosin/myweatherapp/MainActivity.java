@@ -15,6 +15,9 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mosin.myweatherapp.dao.EducationDao;
+import com.mosin.myweatherapp.modelDB.Cities;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,10 +25,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedPreferences;
-    private String cityChoice;
+    private String cityChoice, dateText;
+    private EducationSource educationSource;
+    Cities city = new Cities();
 
 
     @Override
@@ -80,7 +90,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Сделал для перехода по поиску из любой открытой страницы, не понял как сделать переподсветку дровера.
-                cityChoice = query;
+                cityChoice = query.toUpperCase();
+                addCity();
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("cityName", cityChoice);
@@ -142,5 +153,24 @@ public class MainActivity extends AppCompatActivity
             NotificationChannel channel = new NotificationChannel("2", "name", importance);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    //TODO добавить запрос температуры
+    public void addCity() {
+        dateInit();
+        city.cityName = cityChoice.toUpperCase();
+        city.cityTemp = "Температура н/д";
+        city.date = dateText;
+        EducationDao educationDao = App
+                .getInstance()
+                .getEducationDao();
+        educationSource = new EducationSource(educationDao);
+        educationSource.addCity(city);
+    }
+
+    private void dateInit() {
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
+        dateText = dateFormat.format(currentDate);
     }
 }

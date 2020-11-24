@@ -35,13 +35,13 @@ public class Fragment_main extends Fragment {
     private final String WEATHER_URL = "https://api.openweathermap.org/";
     private final String API_KEY = "762ee61f52313fbd10a4eb54ae4d4de2";
     private final String MERRIC = "metric";
-    private TextView showTempView, showWindSpeed, showPressure, showHumidity, cityName, dateNow, tempLikeView;
+    private TextView showTempView, showWindSpeed, showPressure, showHumidity, cityName, dateNow, tempLikeView, someText;
     private ImageView icoWeather;
     SharedPreferences sharedPreferences;
     private String cityChoice, icoView, temperatureValue, dateText, windSpeedStr, pressureText, humidityStr, tempLike;
+    private float tempValFloat;
     private boolean wind, pressure, humidity;
-    private EducationSource educationSource;
-    Cities city = new Cities();
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,8 +69,21 @@ public class Fragment_main extends Fragment {
         cityName = view.findViewById(R.id.cityNameView);
         dateNow = view.findViewById(R.id.date_view);
         tempLikeView = view.findViewById(R.id.tempLike);
+        someText = view.findViewById(R.id.someText);
 
     }
+//TODO
+//    public void setSomeText(){
+//        if (tempValFloat > -5  && tempValFloat < 0){
+//            someText.setText("Сагодня в " + cityChoice + " зябко");
+//        }
+//        else if (tempValFloat > -10 && tempValFloat <= - 6){
+//            someText.setText("Сагодня в " + cityChoice + " Алеша");
+//        }
+//        else if (tempValFloat > -20 && tempValFloat <= - 11){
+//            someText.setText("Сагодня в " + cityChoice + " Рома");
+//        }
+//    }
 
     public void initSettingSwitch() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -96,7 +109,8 @@ public class Fragment_main extends Fragment {
                     @Override
                     public void onResponse(Call<WeatherRequest> call, Response<WeatherRequest> response) {
                         if (response.body() != null) {
-                            temperatureValue = String.format(Locale.getDefault(), "%.1f°", response.body().getMain().getTemp());
+                            tempValFloat = response.body().getMain().getTemp();
+                            temperatureValue = String.format(Locale.getDefault(), "%.0f°", response.body().getMain().getTemp());
                             windSpeedStr = String.format(Locale.getDefault(), "%.0f", response.body().getWind().getSpeed());
                             pressureText = String.format(Locale.getDefault(), "%.0f", response.body().getMain().getPressure());
                             humidityStr = String.format(Locale.getDefault(), "%d", response.body().getMain().getHumidity());
@@ -119,7 +133,6 @@ public class Fragment_main extends Fragment {
                             } else {
                                 showHumidity.setVisibility(View.GONE);
                             }
-                            addCity();
                             setIcoViewImage();
                         } else if (response.code() == 404) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -148,23 +161,38 @@ public class Fragment_main extends Fragment {
                 });
     }
 
+    //TODO вынести в текст ресурсы
     private void setIcoViewImage() {
         if (icoView.equals("01d")) {
             icoWeather.setImageResource(R.drawable.clear_sky_d);
+            someText.setText("Сейчас день на небе ни облачка");
         } else if (icoView.equals("01n")) {
             icoWeather.setImageResource(R.drawable.clear_sky_n);
+            someText.setText("Сейчас ночь ни облачка");
         } else if (icoView.equals("02d") || icoView.equals("03d") || icoView.equals("04d")) {
             icoWeather.setImageResource(R.drawable.few_clouds_d);
+            someText.setText("Сейчас день облачно");
         } else if (icoView.equals("02n") || icoView.equals("03n") || icoView.equals("04n")) {
             icoWeather.setImageResource(R.drawable.few_clouds_n);
+            someText.setText("Сейчас ночь облачно");
         } else if (icoView.equals("09d") || icoView.equals("10d")) {
             icoWeather.setImageResource(R.drawable.rain_d);
+            someText.setText("Сейчас день идет дождь");
         } else if (icoView.equals("09n") || icoView.equals("10n")) {
             icoWeather.setImageResource(R.drawable.rain_n);
-        } else if (icoView.equals("13n") || icoView.equals("13d")) {
+            someText.setText("Сейчас ночь идет дождь");
+        } else if (icoView.equals("13d")) {
             icoWeather.setImageResource(R.drawable.snow);
-        } else if (icoView.equals("50n") || icoView.equals("50d")) {
+            someText.setText("Сейчас день идет снег");
+        } else if (icoView.equals("13n")) {
+            icoWeather.setImageResource(R.drawable.snow);
+            someText.setText("Сейчас ночь идет снег");
+        }else if (icoView.equals("50n")) {
             icoWeather.setImageResource(R.drawable.mist);
+            someText.setText("Сейчас ночь наблюдается туман");
+        }else if (icoView.equals("50d")) {
+            icoWeather.setImageResource(R.drawable.mist);
+            someText.setText("Сейчас день наблюдается туман");
         }
     }
 
@@ -173,17 +201,6 @@ public class Fragment_main extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
         dateText = dateFormat.format(currentDate);
         dateNow.setText(dateText);
-    }
-
-    public void addCity() {
-        city.cityName = cityChoice;
-        city.cityTemp = "Температура " + temperatureValue;
-        city.date = dateText;
-        EducationDao educationDao = App
-                .getInstance()
-                .getEducationDao();
-        educationSource = new EducationSource(educationDao);
-        educationSource.addCity(city);
     }
 }
 

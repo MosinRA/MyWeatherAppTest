@@ -54,7 +54,7 @@ public class Fragment_history extends Fragment {
             public void onItemClick(View view, int position) {
                 position = recyclerView.getChildAdapterPosition(view);
                 List<Cities> cities = educationSource.getCities();
-                cityChoice = cities.get(position).cityName;
+                cityChoice = cities.get(position).cityName.toUpperCase();
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("cityName", cityChoice);

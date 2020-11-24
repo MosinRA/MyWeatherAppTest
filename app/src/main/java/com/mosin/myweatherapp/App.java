@@ -26,7 +26,7 @@ public class App extends Application {
         db = Room.databaseBuilder(
                 getApplicationContext(),
                 EducationDatabase.class,
-                "database_hist")
+                "database_histot")
                 .allowMainThreadQueries()
                 .build();
     }

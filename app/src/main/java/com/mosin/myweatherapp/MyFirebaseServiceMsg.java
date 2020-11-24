@@ -1,7 +1,9 @@
 package com.mosin.myweatherapp;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -23,10 +25,19 @@ public class MyFirebaseServiceMsg extends FirebaseMessagingService {
         }
         String text = remoteMessage.getNotification().getBody();
         // создать нотификацию
+        //создаем интент для открытия из пуша
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent
+                .getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "2")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
-                .setContentText(text);
+                .setContentText(text)
+                // переход на интент
+                .setContentIntent(pendingIntent);
         NotificationManager notificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(messageId++, builder.build());

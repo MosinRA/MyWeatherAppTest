@@ -59,10 +59,6 @@ public class CityRecyclerAdapter extends RecyclerView.Adapter<CityRecyclerAdapte
                     }
             }
         });
-        // Регистрируем контекстное меню
-        if (activity != null) {
-            activity.registerForContextMenu(holder.cardView);
-        }
     }
 
     @Override

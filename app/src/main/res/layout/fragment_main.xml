@@ -11,35 +11,53 @@
         android:id="@+id/weatherIcoView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/showTempViewFragmentShowCityInfo"
-        app:layout_constraintTop_toBottomOf="@+id/date_view" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
 
     <TextView
         android:id="@+id/cityNameView"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:text=""
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="city_name" />
+
+    <TextView
+        android:id="@+id/someText"
+        style="@style/TextStyle"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text=""
+        android:textSize="@dimen/size_30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView"
+        tools:text="some_text" />
 
     <TextView
         android:id="@+id/date_view"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
         android:text=""
-        android:textSize="@dimen/size_30sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityNameView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView"
         tools:text="date_text" />
 
     <TextView
@@ -47,12 +65,13 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="40dp"
         android:text=""
         android:textSize="80sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_view"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="temp" />
 
     <TextView
@@ -60,11 +79,12 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text=""
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/wind_ico"
         app:layout_constraintStart_toStartOf="@+id/wind_ico"
-        app:layout_constraintTop_toTopOf="@+id/humidityView"
+        app:layout_constraintTop_toBottomOf="@+id/wind_ico"
         tools:text="wind" />
 
     <TextView
@@ -72,11 +92,12 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text=""
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/pressure_ico"
         app:layout_constraintStart_toStartOf="@+id/pressure_ico"
-        app:layout_constraintTop_toTopOf="@+id/humidityView"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_ico"
         tools:text="pressure" />
 
     <TextView
@@ -97,17 +118,19 @@
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
         android:text=""
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/showTempViewFragmentShowCityInfo"
-        app:layout_constraintTop_toBottomOf="@+id/showTempViewFragmentShowCityInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toEndOf="@+id/date_view"
+        app:layout_constraintTop_toTopOf="@+id/date_view"
         tools:text="temp_like" />
 
     <ImageView
         android:id="@+id/wind_ico"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/windico"
         app:layout_constraintEnd_toStartOf="@+id/humidity_ico"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,18 +138,19 @@
 
     <ImageView
         android:id="@+id/humidity_ico"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="250dp"
         android:src="@drawable/humidityico"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
 
     <ImageView
         android:id="@+id/pressure_ico"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/pressureico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/humidity_ico"
