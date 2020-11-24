@@ -24,17 +24,14 @@ public interface EducationDao {
     @Delete
     void deleteCity (Cities city);
 
-    @Query("DELETE FROM cities WHERE id = :id")
-    void deleteCityById(long id);
+    @Query("DELETE FROM cities WHERE cityName = :id")
+    void deleteCityById(String id);
 
     @Query("SELECT * FROM cities")
     List<Cities> getAllCities();
 
-    @Query("SELECT * FROM cities WHERE id = :id")
-    Cities getCityById(long id);
-
-    @Query("SELECT * FROM cities WHERE city_name LIKE :searchCityName")
-    Cities getCityForUpdate(String searchCityName);
+    @Query("SELECT * FROM cities WHERE cityName = :id")
+    Cities getCityById(String id);
 
     @Query("SELECT COUNT() FROM cities")
     long getCountCity();

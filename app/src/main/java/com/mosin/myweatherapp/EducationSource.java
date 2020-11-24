@@ -26,7 +26,7 @@ public class EducationSource {
         cities = educationDao.getAllCities();
     }
 
-    public void getCityById(int id){
+    public void getCityById(String  id){
         educationDao.getCityById(id);
     }
 

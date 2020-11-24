@@ -1,7 +1,10 @@
 package com.mosin.myweatherapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -12,9 +15,6 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
-import com.mosin.myweatherapp.dao.EducationDao;
-import com.mosin.myweatherapp.modelDB.Cities;
-
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedPreferences;
     private String cityChoice;
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
-
+        initNotificationChannel();
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
     }
+
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity
                 searchText.onActionViewCollapsed();
                 return true;
             }
+
             // реагирует на нажатие каждой клавиши
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_search_home:
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -118,9 +120,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_settings:
                 getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, new Fragment_settings())
-                    .commit();
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, new Fragment_settings())
+                        .commit();
                 break;
             case R.id.nav_send:
                 break;
@@ -131,5 +133,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("2", "name", importance);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

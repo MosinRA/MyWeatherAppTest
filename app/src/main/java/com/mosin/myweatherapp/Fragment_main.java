@@ -2,12 +2,8 @@ package com.mosin.myweatherapp;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,26 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.gson.Gson;
 import com.mosin.myweatherapp.dao.EducationDao;
 import com.mosin.myweatherapp.interfaces.IOpenWeatherMap;
 import com.mosin.myweatherapp.model.WeatherRequest;
 import com.mosin.myweatherapp.modelDB.Cities;
-import com.squareup.picasso.Picasso;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,10 +35,10 @@ public class Fragment_main extends Fragment {
     private final String WEATHER_URL = "https://api.openweathermap.org/";
     private final String API_KEY = "762ee61f52313fbd10a4eb54ae4d4de2";
     private final String MERRIC = "metric";
-    private TextView showTempView, showWindSpeed, showPressure, showHumidity, cityName, dateNow;
-    private ImageView icoWeather, pic;
+    private TextView showTempView, showWindSpeed, showPressure, showHumidity, cityName, dateNow, tempLikeView;
+    private ImageView icoWeather;
     SharedPreferences sharedPreferences;
-    private String cityChoice, icoView, temperatureValue;
+    private String cityChoice, icoView, temperatureValue, dateText, windSpeedStr, pressureText, humidityStr, tempLike;
     private boolean wind, pressure, humidity;
     private EducationSource educationSource;
     Cities city = new Cities();
@@ -72,7 +57,6 @@ public class Fragment_main extends Fragment {
         initSettingSwitch();
         initRetorfit();
         requestRetrofit(cityChoice, MERRIC, API_KEY);
-        setPic();
         dateInit();
     }
 
@@ -84,7 +68,8 @@ public class Fragment_main extends Fragment {
         icoWeather = view.findViewById(R.id.weatherIcoView);
         cityName = view.findViewById(R.id.cityNameView);
         dateNow = view.findViewById(R.id.date_view);
-        pic = view.findViewById(R.id.picas_pic);
+        tempLikeView = view.findViewById(R.id.tempLike);
+
     }
 
     public void initSettingSwitch() {
@@ -93,7 +78,7 @@ public class Fragment_main extends Fragment {
         pressure = sharedPreferences.getBoolean("Pressure", false);
         humidity = sharedPreferences.getBoolean("Humidity", false);
         cityChoice = sharedPreferences.getString("cityName", cityChoice);
-        cityName.setText(cityChoice);
+        cityName.setText(cityChoice.toUpperCase());
     }
 
     private void initRetorfit() {
@@ -111,24 +96,26 @@ public class Fragment_main extends Fragment {
                     @Override
                     public void onResponse(Call<WeatherRequest> call, Response<WeatherRequest> response) {
                         if (response.body() != null) {
-                            temperatureValue = String.format(Locale.getDefault(), "%.1f °", response.body().getMain().getTemp());
-                            String windSpeedStr = String.format(Locale.getDefault(), "%.0f", response.body().getWind().getSpeed());
-                            String pressureText = String.format(Locale.getDefault(), "%.0f", response.body().getMain().getPressure());
-                            String humidityStr = String.format(Locale.getDefault(), "%d", response.body().getMain().getHumidity());
+                            temperatureValue = String.format(Locale.getDefault(), "%.1f°", response.body().getMain().getTemp());
+                            windSpeedStr = String.format(Locale.getDefault(), "%.0f", response.body().getWind().getSpeed());
+                            pressureText = String.format(Locale.getDefault(), "%.0f", response.body().getMain().getPressure());
+                            humidityStr = String.format(Locale.getDefault(), "%d", response.body().getMain().getHumidity());
+                            tempLike = String.format(Locale.getDefault(), "%.1f°", response.body().getMain().getFeels_like());
                             icoView = response.body().getWeather()[0].getIcon();
+                            tempLikeView.setText(String.format("%s %s", getResources().getString(R.string.temp_like), tempLike));
                             showTempView.setText(temperatureValue);
                             if (wind) {
-                                showWindSpeed.setText(String.format("%s %s м/с", getResources().getString(R.string.wind_speed), windSpeedStr));
+                                showWindSpeed.setText(String.format("%s м/с", windSpeedStr));
                             } else {
                                 showWindSpeed.setVisibility(View.GONE);
                             }
                             if (pressure) {
-                                showPressure.setText(String.format("%s %s мм рт.ст.", getResources().getString(R.string.pressure), pressureText));
+                                showPressure.setText(String.format("%s мм рт.ст.", pressureText));
                             } else {
                                 showPressure.setVisibility(View.GONE);
                             }
                             if (humidity) {
-                                showHumidity.setText(String.format("%s %s %%", getResources().getString(R.string.humidity), humidityStr));
+                                showHumidity.setText(String.format("%s%%", humidityStr));
                             } else {
                                 showHumidity.setVisibility(View.GONE);
                             }
@@ -184,19 +171,14 @@ public class Fragment_main extends Fragment {
     private void dateInit() {
         Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
-        String dateText = dateFormat.format(currentDate);
+        dateText = dateFormat.format(currentDate);
         dateNow.setText(dateText);
-    }
-
-    private void setPic() {
-        Picasso.get()
-                .load("https://www.dorogavrim.ru/img/flagi/goroda/flag_" + cityChoice.toLowerCase() + ".jpg")
-                .into(pic);
     }
 
     public void addCity() {
         city.cityName = cityChoice;
         city.cityTemp = "Температура " + temperatureValue;
+        city.date = dateText;
         EducationDao educationDao = App
                 .getInstance()
                 .getEducationDao();

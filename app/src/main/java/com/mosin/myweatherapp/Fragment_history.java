@@ -1,17 +1,11 @@
 package com.mosin.myweatherapp;
 
-
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mosin.myweatherapp.dao.EducationDao;
 import com.mosin.myweatherapp.modelDB.Cities;
 
-import java.util.LinkedList;
+import java.util.List;
 
 public class Fragment_history extends Fragment {
     private CityRecyclerAdapter adapter;
@@ -54,11 +48,13 @@ public class Fragment_history extends Fragment {
         educationSource = new EducationSource(educationDao);
         adapter = new CityRecyclerAdapter(educationSource, getActivity());
         recyclerView.setAdapter(adapter);
-        recyclerView.setOnClickListener(new View.OnClickListener() {
+        //рабочий кликер, разбираюсь как подтянуть текст с конпки
+        adapter.SetOnItemClickListener(new CityRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-//                long id = recyclerView.getChildAdapterPosition(view);
-//                cityChoice = educationSource.getCityById(id);
+            public void onItemClick(View view, int position) {
+                position = recyclerView.getChildAdapterPosition(view);
+                List<Cities> cities = educationSource.getCities();
+                cityChoice = cities.get(position).cityName;
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("cityName", cityChoice);
@@ -69,5 +65,6 @@ public class Fragment_history extends Fragment {
                         .commit();
             }
         });
+
     }
 }

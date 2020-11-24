@@ -9,26 +9,47 @@
     app:cardElevation="5dp"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textCityName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text=""
+            tools:text="city_name"
             android:textAlignment="viewStart"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text=""
+            android:textAlignment="viewStart"
+            android:textSize="30sp"
+            app:layout_constraintStart_toEndOf="@+id/textCityName"
+            app:layout_constraintTop_toTopOf="@+id/textCityName"
+            tools:text="date text" />
 
         <TextView
             android:id="@+id/textCityTemp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textAlignment="viewEnd"
-            android:textSize="30sp" />
-    </LinearLayout>
+            android:text=""
+            android:textAlignment="viewStart"
+            android:textSize="30sp"
+            app:layout_constraintStart_toStartOf="@+id/textCityName"
+            app:layout_constraintTop_toBottomOf="@+id/textCityName"
+            tools:text="temp text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
