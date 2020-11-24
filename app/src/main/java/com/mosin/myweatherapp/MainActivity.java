@@ -1,7 +1,13 @@
 package com.mosin.myweatherapp;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SearchView;
@@ -22,10 +28,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener {
     SharedPreferences sharedPreferences;
-    private String cityChoice;
+    private String cityChoice, dateText;
+    private EducationSource educationSource;
+    Cities city = new Cities();
+
+    private BroadcastReceiver myReceiver = new MyReceiver();
 
 
     @Override
@@ -34,7 +49,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
+        initNotificationChannel();
 
+        registerReceiver(myReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -42,6 +59,7 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         }
     }
+
     private Toolbar initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,7 +97,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //Сделал для перехода по поиску из любой открытой страницы, не понял как сделать переподсветку дровера.
-                cityChoice = query;
+                cityChoice = query.toUpperCase();
+                addCity();
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("cityName", cityChoice);
@@ -91,6 +110,7 @@ public class MainActivity extends AppCompatActivity
                 searchText.onActionViewCollapsed();
                 return true;
             }
+
             // реагирует на нажатие каждой клавиши
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -103,7 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_search_home:
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -118,9 +138,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_settings:
                 getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, new Fragment_settings())
-                    .commit();
+                        .beginTransaction()
+                        .replace(R.id.fragmentContainer, new Fragment_settings())
+                        .commit();
                 break;
             case R.id.nav_send:
                 break;
@@ -131,5 +151,39 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("2", "name", importance);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    //TODO добавить запрос температуры
+    public void addCity() {
+        dateInit();
+        city.cityName = cityChoice.toUpperCase();
+        city.cityTemp = "Температура н/д";
+        city.date = dateText;
+        EducationDao educationDao = App
+                .getInstance()
+                .getEducationDao();
+        educationSource = new EducationSource(educationDao);
+        educationSource.addCity(city);
+    }
+
+    private void dateInit() {
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy", Locale.getDefault());
+        dateText = dateFormat.format(currentDate);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
     }
 }

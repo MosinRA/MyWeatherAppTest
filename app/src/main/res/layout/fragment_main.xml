@@ -2,100 +2,158 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
     <ImageView
         android:id="@+id/weatherIcoView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
 
     <TextView
         android:id="@+id/cityNameView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
         android:text=""
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="city_name" />
+
+    <TextView
+        android:id="@+id/someText"
         style="@style/TextStyle"
-        app:layout_constraintStart_toEndOf="@+id/weatherIcoView"
-        app:layout_constraintTop_toTopOf="@+id/weatherIcoView" />
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:text=""
+        android:textSize="@dimen/size_30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView"
+        tools:text="some_text" />
 
     <TextView
         android:id="@+id/date_view"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="200dp"
         android:text=""
-        app:layout_constraintStart_toEndOf="@+id/weatherIcoView"
-        app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView"
+        tools:text="date_text" />
 
     <TextView
         android:id="@+id/showTempViewFragmentShowCityInfo"
         style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="40dp"
         android:text=""
-        app:layout_constraintStart_toStartOf="@+id/date_view"
-        app:layout_constraintTop_toBottomOf="@+id/date_view" />
+        android:textSize="80sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="temp" />
 
     <TextView
         android:id="@+id/windSpeedView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="5dp"
         android:text=""
-        style="@style/TextStyle"
-        app:layout_constraintStart_toStartOf="@+id/weatherIcoView"
-        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/wind_ico"
+        app:layout_constraintStart_toStartOf="@+id/wind_ico"
+        app:layout_constraintTop_toBottomOf="@+id/wind_ico"
+        tools:text="wind" />
 
     <TextView
         android:id="@+id/pressureView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:text=""
-        style="@style/TextStyle"
-        app:layout_constraintStart_toStartOf="@+id/windSpeedView"
-        app:layout_constraintTop_toBottomOf="@+id/windSpeedView" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/pressure_ico"
+        app:layout_constraintStart_toStartOf="@+id/pressure_ico"
+        app:layout_constraintTop_toBottomOf="@+id/pressure_ico"
+        tools:text="pressure" />
 
     <TextView
         android:id="@+id/humidityView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:text=""
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/humidity_ico"
+        app:layout_constraintStart_toStartOf="@+id/humidity_ico"
+        app:layout_constraintTop_toBottomOf="@+id/humidity_ico"
+        tools:text="humidity" />
+
+    <TextView
+        android:id="@+id/tempLike"
         style="@style/TextStyle"
-        app:layout_constraintStart_toStartOf="@+id/pressureView"
-        app:layout_constraintTop_toBottomOf="@+id/pressureView" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:text=""
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toEndOf="@+id/date_view"
+        app:layout_constraintTop_toTopOf="@+id/date_view"
+        tools:text="temp_like" />
 
     <ImageView
-        android:id="@+id/picas_pic"
+        android:id="@+id/wind_ico"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="12dp"
+        android:src="@drawable/windico"
+        app:layout_constraintEnd_toStartOf="@+id/humidity_ico"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/humidity_ico" />
+
+    <ImageView
+        android:id="@+id/humidity_ico"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="250dp"
+        android:src="@drawable/humidityico"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/humidityView" />
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
 
-    <TextView
-        android:id="@+id/vremenno"
-        style="@style/TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="^Тут должен быть Ваш флаг^"
-        android:textSize="20sp"
+    <ImageView
+        android:id="@+id/pressure_ico"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/pressureico"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/picas_pic" />
+        app:layout_constraintStart_toEndOf="@+id/humidity_ico"
+        app:layout_constraintTop_toTopOf="@+id/humidity_ico" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

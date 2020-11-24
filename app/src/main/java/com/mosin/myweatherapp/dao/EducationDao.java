@@ -18,20 +18,20 @@ public interface EducationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCity(Cities city);
 
-    @Update
+    @Update()
     void updateCity (Cities city);
 
     @Delete
     void deleteCity (Cities city);
 
-    @Query("DELETE FROM cities WHERE id = :id")
-    void deleteCityById(long id);
+    @Query("DELETE FROM cities WHERE cityName = :id")
+    void deleteCityById(String id);
 
     @Query("SELECT * FROM cities")
     List<Cities> getAllCities();
 
-    @Query("SELECT * FROM cities WHERE id = :id")
-    Cities getCityById(long id);
+    @Query("SELECT * FROM cities WHERE cityName = :id")
+    Cities getCityById(String id);
 
     @Query("SELECT COUNT() FROM cities")
     long getCountCity();
